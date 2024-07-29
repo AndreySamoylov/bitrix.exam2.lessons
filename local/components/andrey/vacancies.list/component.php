@@ -55,13 +55,12 @@ $arAddCacheParams = array(
     "SESS_MODE" => $_SESSION['SESS_PUBLIC_SHOW_MODE']?$_SESSION['SESS_PUBLIC_SHOW_MODE']:'view',
 );
 
-//**work body**// Начало кеширования
+//**work body**// Начало кеширования, если кещ неактуален
 if($this->StartResultCache(false, array(($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups()), $arFilter, $arAddCacheParams)))
 {
     $arResult['ITEMS'] = Array();
     $arItems = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
 
-    // Формирование кнопок для подержки технологии эрмитаж
     while($arResItems = $arItems->Fetch()){
 
         $arResItems["EDIT_LINK"] = '/bitrix/admin/iblock_element_edit.php?ID='.$arResItems["ID"].'&type='.$arParams["IBLOCK_TYPE"].'&lang='.LANGUAGE_ID.'&IBLOCK_ID='.$arParams["IBLOCK_ID"].'&find_section_section='.$arResItems["IBLOCK_SECTION_ID"].'&bxpublic=Y&from_module=iblock';
@@ -115,7 +114,7 @@ if($USER->IsAuthorized())
     {
         if(CModule::IncludeModule("iblock"))
         {
-
+            // Формирование кнопок для подержки технологии эрмитаж
             $arButtons = CIBlock::GetPanelButtons($arParams["IBLOCK_ID"], 0, $arParams["SECTION_ID"]);
 
             foreach ($arButtons as $key => $arButton){
